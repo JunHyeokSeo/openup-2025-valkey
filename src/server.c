@@ -4698,7 +4698,12 @@ void echoCommand(client *c) {
 }
 
 void echoJunHyeokCommand(client *c) {
-    addReplyBulk(c, c->argv[1]);
+    robj *arg = c->argv[1];
+    sds prefix = sdsnew("echoJunHyoek_");
+    sds result = sdscat(prefix, arg->ptr);
+
+    addReplyBulkCBuffer(c, result, sdslen(result));
+    sdsfree(result);
 }
 
 void timeCommand(client *c) {
